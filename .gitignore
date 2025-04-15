@@ -1,0 +1,34 @@
+# .gitignore
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.swp
+
+# Env files
+.env
+
+# Database
+*.sqlite3
+*.sql
+
+# Logs
+*.log
+
+# Virtual environments
+venv/
+
+# Django static/media files
+/staticfiles/
+/media/
+
+/*.tar.gz
+
+# VSCode / other editor files
+.vscode/
+.idea/
+
+# Backup files
+*.bak
+*.tmp
+

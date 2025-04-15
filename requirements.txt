@@ -1,0 +1,26 @@
+# Django and related packages
+Django==4.2.10                # Latest LTS version compatible with Python 3.11
+djangorestframework==3.14.0   # Latest stable version
+django-cors-headers==4.3.1    # Latest stable version
+
+# Numerical and data libraries
+numpy==1.26.4                 # Latest stable version for Python 3.11
+pandas==2.2.0                 # Latest stable version compatible with Python 3.11
+python-dateutil==2.8.2        # Required by pandas for handling dates
+
+# Image processing
+Pillow==10.2.0               # Latest stable version for Python 3.11
+
+# Timezone and date utilities
+pytz==2024.1                 # Latest timezone support
+tzdata==2024.1               # Latest IANA time zone database
+
+# HTTP and requests handling
+requests==2.31.0             # Latest stable version
+urllib3==2.2.0               # Latest stable version
+
+# Miscellaneous
+sqlparse==0.4.4              # SQL utilities (used by Django)
+setuptools==69.0.3           # Latest stable version
+six==1.16.0                  # Python 2 and 3 compatibility utilities
+gunicorn==21.2.0            # Latest stable version
