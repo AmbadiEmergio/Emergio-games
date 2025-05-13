@@ -130,3 +130,12 @@ class LeadView(APIView):
             data = request.data
             csv = create_csv(data)
             return Response({'status':True,'message': 'Your message has been saved'})
+        
+class SignupView(APIView):
+    @csrf_exempt 
+    def post(self, request):
+        serializer = SignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'message': 'Signup successful'})
+        return Response({'status': False, 'errors': serializer.errors}, status=400)

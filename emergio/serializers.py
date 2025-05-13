@@ -55,3 +55,8 @@ class HireSerializer(serializers.ModelSerializer):
     class Meta:
         model = Hire
         fields = '__all__'
+
+class SignupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SignUp
+        fields = '__all__'

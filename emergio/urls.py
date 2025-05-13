@@ -14,5 +14,6 @@ urlpatterns = [
     path('emergio/contact/', ContactView.as_view()),
     path('emergio/form/', FormView.as_view()),
     path('emergio/lead/', LeadView.as_view()),
+    path('emergio/signup/', SignupView.as_view()),
 ]
 

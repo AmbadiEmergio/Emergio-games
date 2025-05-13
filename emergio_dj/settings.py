@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-7#0(a0h*$cfot=#20+7b@b7z=uv+b4$+@_3nu+h_n03$&7#k8_
 DEBUG = True
 
 ALLOWED_HOSTS = ['emergiogames.com', 'www.emergiogames.com']
+# ALLOWED_HOSTS = ['*']  # Allow all hosts for development purposes
 
 
 # Application definition
@@ -115,6 +116,16 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # MySQL backend
+#         'NAME': 'emergio_db',          # Database name
+#         'USER': 'root',               # Database user
+#         'PASSWORD': '12345',           # User password
+#         'HOST': 'localhost',                   # Host, e.g., localhost or IP
+#         'PORT': '3307',                        # MySQL default port
+#     }
+# }
 
 
 # Password validation

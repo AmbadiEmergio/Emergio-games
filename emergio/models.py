@@ -84,3 +84,15 @@ class Team(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to = 'team')
     position = models.CharField(max_length=20)
+
+class SignUp(models.Model):
+    fullname = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    phone = models.CharField(max_length=20)
+    pincode = models.CharField(max_length=20)
+    qualification= models.CharField(max_length=20)
+    dob = models.CharField(max_length=20)
+    domain = models.CharField(max_length=20)
+    secondary_phone = models.CharField(max_length=20)
+    address = models.CharField(max_length=100)
+    paymentmethod= models.CharField(max_length=20)
