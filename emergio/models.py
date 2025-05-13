@@ -38,8 +38,12 @@ class Stories(models.Model):
         return self.link
 
 class Career(models.Model):
-    position = models.CharField(max_length=20)
-    experiance = models.CharField(max_length=20)
+    position = models.CharField(max_length=20,null=True, blank=True)
+    experiance = models.CharField(max_length=20,null=True, blank=True)
+    category = models.CharField(max_length=100,null=True, blank=True)
+    locations = models.JSONField(null=True, blank=True,default=['Kochi','Chennai'])  
+    description = models.TextField(null=True, blank=True)
+    posted_on = models.DateField(auto_now_add=True, null=True, blank=True)
     def __str__(self):
         return self.position
 

@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -7,7 +8,7 @@ from .models import *
 import json
 import pandas as pd
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
+from django.db.models import Q, Count
 from .utils.csv_util import create_csv
 
 def index(request):
@@ -49,11 +50,11 @@ class StoryView(APIView):
         serializer = StorySerializer(pl,many = True)
         return Response(serializer.data)
 
-class CareerView(APIView):
-    def get(self, request):
-        pl =  Career.objects.all().order_by('-id')
-        serializer = CareerSerializer(pl,many = True)
-        return Response(serializer.data)
+# class CareerView(APIView):
+#     def get(self, request):
+#         pl =  Career.objects.all().order_by('-id')
+#         serializer = CareerSerializer(pl,many = True)
+#         return Response(serializer.data)
 
 class AppView(APIView):
     def get(self, request):
@@ -139,3 +140,66 @@ class SignupView(APIView):
             serializer.save()
             return Response({'status': True, 'message': 'Signup successful'})
         return Response({'status': False, 'errors': serializer.errors}, status=400)
+    
+class JobListView(APIView):
+    def get(self, request):
+        category = request.GET.get('category')
+        location = request.GET.get('location')
+
+        if category and location:
+            jobs = Career.objects.filter(
+                Q(category__icontains=category) & Q(locations__contains=[location])
+            )
+        elif category:
+            jobs = Career.objects.filter(category__icontains=category)
+        elif location:
+            jobs = Career.objects.filter(locations__contains=[location])
+        else:
+            jobs = Career.objects.all()
+
+        serializer = CareerSerializer(jobs, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class JobCategoryCountView(APIView):
+    def get(self, request):
+        categories = Career.objects.values('category').annotate(count=Count('id'))
+        return Response(categories, status=status.HTTP_200_OK)
+
+
+# class CurrentVacancyView(APIView):
+#     def get(self, request):
+#         jobs = Job.objects.all().order_by('-posted_on')[:10]  # Latest 10 jobs
+#         data = []
+
+#         for job in jobs:
+#             data.append({
+#                 "title": job.title,
+#                 "location_count": len(job.locations),
+#                 "locations": job.locations
+#             })
+
+#         return Response(data, status=status.HTTP_200_OK)
+
+class CurrentVacancyView(APIView):
+    def get(self, request):
+        today = timezone.now().date()
+        current_month_jobs = Career.objects.filter(
+            posted_on__year=today.year,
+            posted_on__month=today.month
+        ).order_by('-posted_on')
+
+        if current_month_jobs.exists():
+            jobs = current_month_jobs
+        else:
+            jobs = Career.objects.all().order_by('-posted_on')[:10]
+
+        data = []
+        for job in jobs:
+            data.append({
+                "title": job.position,
+                "location_count": len(job.locations),
+                "locations": job.locations
+            })
+
+        return Response(data, status=status.HTTP_200_OK)
