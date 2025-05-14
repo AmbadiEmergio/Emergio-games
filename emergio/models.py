@@ -36,11 +36,18 @@ class Stories(models.Model):
     link = models.URLField(max_length=200)
     def __str__(self):
         return self.link
+    
+class Category(models.Model):
+    category=models.CharField(max_length=20,null=True,blank=True)
+    image=models.ImageField(upload_to='category',null=True,blank=True)
+
+    def __str__(self):
+        return self.category
 
 class Career(models.Model):
     position = models.CharField(max_length=20,null=True, blank=True)
     experiance = models.CharField(max_length=20,null=True, blank=True)
-    category = models.CharField(max_length=100,null=True, blank=True)
+    category = models.ForeignKey(Category,on_delete=models.CASCADE,null=True)
     locations = models.JSONField(null=True, blank=True,default=['Kochi','Chennai'])  
     description = models.TextField(null=True, blank=True)
     posted_on = models.DateField(auto_now_add=True, null=True, blank=True)

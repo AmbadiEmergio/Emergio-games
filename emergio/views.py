@@ -140,7 +140,7 @@ class SignupView(APIView):
             serializer.save()
             return Response({'status': True, 'message': 'Signup successful'})
         return Response({'status': False, 'errors': serializer.errors}, status=400)
-    
+
 class JobListView(APIView):
     def get(self, request):
         category = request.GET.get('category')
@@ -148,10 +148,10 @@ class JobListView(APIView):
 
         if category and location:
             jobs = Career.objects.filter(
-                Q(category__icontains=category) & Q(locations__contains=[location])
+                Q(category__category__icontains=category) & Q(locations__contains=[location])
             )
         elif category:
-            jobs = Career.objects.filter(category__icontains=category)
+            jobs = Career.objects.filter(category__category__icontains=category)
         elif location:
             jobs = Career.objects.filter(locations__contains=[location])
         else:
@@ -163,8 +163,24 @@ class JobListView(APIView):
 
 class JobCategoryCountView(APIView):
     def get(self, request):
-        categories = Career.objects.values('category').annotate(count=Count('id'))
-        return Response(categories, status=status.HTTP_200_OK)
+        # Get counts of careers grouped by category ID
+        category_data = Career.objects.values('category').annotate(count=Count('id'))
+
+        # Prepare the response with category name and image
+        formatted = []
+        for item in category_data:
+            try:
+                category = Category.objects.get(id=item['category'])
+                formatted.append({
+                    'category': category.category,
+                    'image': category.image.url if category.image else None,
+                    'count': item['count']
+                })
+            except Category.DoesNotExist:
+                continue
+
+        return Response(formatted, status=status.HTTP_200_OK)
+
 
 
 # class CurrentVacancyView(APIView):
@@ -200,6 +216,32 @@ class CurrentVacancyView(APIView):
                 "title": job.position,
                 "location_count": len(job.locations),
                 "locations": job.locations
+            })
+
+        return Response(data, status=status.HTTP_200_OK)
+class CurrentVacancyView(APIView):
+    def get(self, request):
+        today = timezone.now().date()
+        current_month_jobs = Career.objects.filter(
+            posted_on__year=today.year,
+            posted_on__month=today.month
+        ).order_by('-posted_on')
+
+        if current_month_jobs.exists():
+            jobs = current_month_jobs
+        else:
+            jobs = Career.objects.all().order_by('-posted_on')[:10]
+
+        data = []
+        for job in jobs:
+            locations = job.locations or []
+            data.append({
+                "title": job.position,
+                "description": job.description,
+                "posted_on": job.posted_on,
+                "category": job.category.category if job.category else None,
+                "location_count": len(locations),
+                "locations": locations
             })
 
         return Response(data, status=status.HTTP_200_OK)
