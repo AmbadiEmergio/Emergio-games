@@ -1,11 +1,20 @@
 from django.db import models
 
 class Courses(models.Model):
-    name = models.CharField(max_length=100)
-    image = models.ImageField(upload_to = 'course')
-    icon = models.ImageField(upload_to = 'course')
-    description = models.CharField(max_length=500)
-    syllabus = models.FileField(upload_to='course')
+    name = models.CharField(max_length=100,null=True, blank=True)
+    image = models.ImageField(upload_to = 'course',null=True, blank=True)
+    sec_image = models.ImageField(upload_to = 'course',null=True, blank=True)
+    icon = models.ImageField(upload_to = 'course',null=True, blank=True)
+    description = models.CharField(max_length=500,null=True, blank=True)
+    short_desc = models.CharField(max_length=500,null=True, blank=True)
+    syllabus = models.FileField(upload_to='course',null=True, blank=True)
+    duration = models.CharField(max_length=20,null=True, blank=True)
+    price = models.CharField(max_length=20,null=True, blank=True)
+    hub=models.CharField(max_length=20,null=True, blank=True,default='Kochi/Chennai')
+    payment_method=models.CharField(max_length=20,null=True, blank=True,default='Online')
+    video=models.FileField(upload_to='course',null=True, blank=True)
+    first_4_topics=models.JSONField(null=True, blank=True,default={"1":"Topic 1","2":"Topic 2","3":"Topic 3","4":"Topic 4"})
+    
     def __str__(self):
        return self.name
 

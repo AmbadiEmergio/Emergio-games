@@ -4,6 +4,7 @@ from .views import *
 urlpatterns = [
     path('', index),
     path('emergio/course/', CourseView.as_view()),
+    path('emergio/coursedetail/<int:pk>/', CourseDetailView.as_view()),
     path('emergio/placement/', PlacementView.as_view()),
     path('emergio/team/', TeamView.as_view()),  # fixed typo
     path('emergio/news/', NewsView.as_view()),

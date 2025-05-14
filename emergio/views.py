@@ -20,6 +20,15 @@ class CourseView(APIView):
         serializer = CourseSerializer(pl,many = True)
         return Response(serializer.data)
 
+class CourseDetailView(APIView):
+    def get(self, request, pk):
+        try:
+            course = Courses.objects.get(id=pk)
+            serializer = CourseSerializer(course, context={"request": request})
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Courses.DoesNotExist:
+            return Response({'error': 'Course not found'}, status=status.HTTP_404_NOT_FOUND)
+
 class PlacementView(APIView):
     def get(self, request):
         pl =  Placement.objects.all()
