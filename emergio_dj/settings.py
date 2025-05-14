@@ -58,7 +58,10 @@ CORS_ALLOWED_ORIGINS = [
     "https://emergiogames.com",
     "https://www.emergiogames.com",
 ]
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://emergiogames.com',
+    'https://www.emergiogames.com',  # include both if needed
+]
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
