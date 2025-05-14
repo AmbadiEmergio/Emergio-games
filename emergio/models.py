@@ -8,6 +8,7 @@ class Courses(models.Model):
     description = models.CharField(max_length=500,null=True, blank=True)
     short_desc = models.CharField(max_length=500,null=True, blank=True)
     syllabus = models.FileField(upload_to='course',null=True, blank=True)
+    nextbatch=models.CharField(max_length=20,null=True, blank=True)
     duration = models.CharField(max_length=20,null=True, blank=True)
     price = models.CharField(max_length=20,null=True, blank=True)
     hub=models.CharField(max_length=20,null=True, blank=True,default='Kochi/Chennai')
