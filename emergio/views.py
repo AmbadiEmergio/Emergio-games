@@ -172,21 +172,18 @@ class JobListView(APIView):
 
 class JobCategoryCountView(APIView):
     def get(self, request):
-        # Get counts of careers grouped by category ID
-        category_data = Career.objects.values('category').annotate(count=Count('id'))
-
-        # Prepare the response with category name and image
         formatted = []
-        for item in category_data:
-            try:
-                category = Category.objects.get(id=item['category'])
-                formatted.append({
-                    'category': category.category,
-                    'image': category.image.url if category.image else None,
-                    'count': item['count']
-                })
-            except Category.DoesNotExist:
-                continue
+
+        # Get all categories
+        all_categories = Category.objects.all()
+
+        for category in all_categories:
+            job_count = Career.objects.filter(category=category).count()
+            formatted.append({
+                'category': category.category,
+                'image': request.build_absolute_uri(category.image.url) if category.image else None,
+                'count': job_count
+            })
 
         return Response(formatted, status=status.HTTP_200_OK)
 
