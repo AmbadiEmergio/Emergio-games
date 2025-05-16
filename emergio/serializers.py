@@ -1,7 +1,13 @@
 from rest_framework import serializers
 from .models import *
 
+class TeamSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Team
+        fields = '__all__'
+        
 class CourseSerializer(serializers.ModelSerializer):
+    team_members = TeamSerializer(many=True, read_only=True)
     class Meta:
         model = Courses
         fields = '__all__'
@@ -11,10 +17,6 @@ class PlacementSerializer(serializers.ModelSerializer):
         model = Placement
         fields = '__all__'
 
-class TeamSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Team
-        fields = '__all__'
 
 class NewsSerializer(serializers.ModelSerializer):
     class Meta:

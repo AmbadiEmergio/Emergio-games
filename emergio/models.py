@@ -15,7 +15,6 @@ class Courses(models.Model):
     payment_method=models.CharField(max_length=20,null=True, blank=True,default='Online')
     video=models.FileField(upload_to='course',null=True, blank=True)
     first_4_topics=models.JSONField(null=True, blank=True,default={"1":"Topic 1","2":"Topic 2","3":"Topic 3","4":"Topic 4"})
-    
     def __str__(self):
        return self.name
 
@@ -105,6 +104,9 @@ class Team(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to = 'team')
     position = models.CharField(max_length=20)
+    course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='team_members', null=True, blank=True)
+    def __str__(self):
+        return self.name
 
 class SignUp(models.Model):
     fullname = models.CharField(max_length=100)
