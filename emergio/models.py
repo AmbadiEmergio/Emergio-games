@@ -103,7 +103,7 @@ class Leads(models.Model):
 class Team(models.Model):
     name = models.CharField(max_length=20)
     image = models.ImageField(upload_to = 'team')
-    position = models.CharField(max_length=20)
+    position = models.CharField(max_length=100)
     course = models.ForeignKey(Courses, on_delete=models.CASCADE, related_name='team_members', null=True, blank=True)
     def __str__(self):
         return self.name
