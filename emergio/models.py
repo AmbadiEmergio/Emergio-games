@@ -119,3 +119,12 @@ class SignUp(models.Model):
     secondary_phone = models.CharField(max_length=20)
     address = models.CharField(max_length=100)
     paymentmethod= models.CharField(max_length=20)
+
+
+class Testimonial(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='testimonial')
+    description = models.TextField()
+    url=models.URLField(max_length=200)
+    def __str__(self):
+        return self.name

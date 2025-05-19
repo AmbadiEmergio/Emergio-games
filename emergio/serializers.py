@@ -62,3 +62,8 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = SignUp
         fields = '__all__'
+
+class TestimonialSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Testimonial
+        fields = '__all__'

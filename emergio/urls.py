@@ -19,5 +19,6 @@ urlpatterns = [
     path('emergio/jobs/', JobListView.as_view()),
     path('emergio/job-categories/', JobCategoryCountView.as_view()),
     path('emergio/current-vacancies/', CurrentVacancyView.as_view()),
+    path('emergio/testimonials/', TestimonialView.as_view()),
 ]
 

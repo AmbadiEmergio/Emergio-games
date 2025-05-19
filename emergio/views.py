@@ -251,3 +251,9 @@ class CurrentVacancyView(APIView):
             })
 
         return Response(data, status=status.HTTP_200_OK)
+
+class TestimonialView(APIView):
+    def get(self, request):
+        pl =  Testimonial.objects.all().order_by('-id')
+        serializer = TestimonialSerializer(pl,many = True)
+        return Response(serializer.data)
