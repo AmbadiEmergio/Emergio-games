@@ -181,7 +181,7 @@ class JobCategoryCountView(APIView):
             job_count = Career.objects.filter(category=category).count()
             formatted.append({
                 'category': category.category,
-                'image': request.build_absolute_uri(category.image.url) if category.image else None,
+                'image': category.image.url if category.image else None,
                 'count': job_count
             })
 
