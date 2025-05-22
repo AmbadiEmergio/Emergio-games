@@ -67,31 +67,24 @@ class StoryView(APIView):
 
 class AppView(APIView):
     def get(self, request):
-        pl =  Application.objects.all()
-        serializer = AppSerializer(pl,many = True)
+        applications = Application.objects.all()
+        serializer = AppSerializer(applications, many=True)
         return Response(serializer.data)
-    @csrf_exempt
-    def post(self,request):
-        if request.method == 'POST':
-            resume = request.FILES.get('resume')
-            name = request.POST.get('name')
-            phone = request.POST.get('phone')
-            email = request.POST.get('email')
-            position = request.POST.get('position')
-            apps = Application.objects.filter(Q(phone=phone) | Q(email=email)).exists()
-            if apps:
-                return Response({'status':False,'message': 'Application exists already'})
-            else:
-                app = Application(
-                    name=name,
-                    phone=phone,
-                    email=email,
-                    position=position,
-                    resume=resume,
-                )
-                app.save()
-                return Response({'status':True,'message': 'Application submitted successfully'})
 
+    def post(self, request):
+        serializer = AppSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                'status': True,
+                'message': 'Application submitted successfully',
+                'data': serializer.data
+            }, status=status.HTTP_201_CREATED)
+        return Response({
+            'status': False,
+            'errors': serializer.errors
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
 class GameView(APIView):
     def get(self, request):
         pl =  Games.objects.all().order_by('-id')

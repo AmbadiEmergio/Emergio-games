@@ -65,7 +65,6 @@ class Career(models.Model):
 
 class Application(models.Model):
     name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=20)
     email = models.CharField(max_length=20)
     position = models.CharField(max_length=20)
     resume = models.FileField(upload_to='resumes')
